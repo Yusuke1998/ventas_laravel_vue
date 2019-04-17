@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('contenido/contenido');
 });
+
+
+Route::resource('categorias','CategoriasController');
+Route::put('categoria/activar/{id}','CategoriasController@activar')->name('categorias.activar');
+Route::put('categoria/desactivar/{id}','CategoriasController@desactivar')->name('categorias.desactivar');
