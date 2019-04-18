@@ -111,6 +111,12 @@
                                     <input type="email" v-model="descripcion" class="form-control" placeholder="Descripcion de la categoria">
                                 </div>
                             </div>
+                            <hr>
+                            <div v-show="errorCategoria" class="form-group row div-error">
+                                <div class="text-center text-error">
+                                    <div v-for="error in errorMsjCategoria" :key="error" v-text="error"></div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -159,7 +165,9 @@
                 arrayCategoria: [],
                 modal: 0,
                 tituloModal: '',
-                tipoAccion: 0
+                tipoAccion: 0,
+                errorCategoria: 0,
+                errorMsjCategoria: []
             }
         },
         methods: {
@@ -173,6 +181,9 @@
                 });
             },
             registrarCategoria(){
+                if (this.validarCategoria()) {
+                    return;
+                }
                 let me = this;
                 axios.post('/categorias',{
                     'nombre':this.nombre,
@@ -186,6 +197,16 @@
                     console.log(error);
                 });
 
+            },
+            validarCategoria(){
+                this.errorCategoria = 0;
+                this.errorMsjCategoria = [];
+                if (!this.nombre) {
+                    this.errorMsjCategoria.push("El nombre de la categoria no puede estar vacio!");
+                    this.errorCategoria = 1;
+
+                    return this.errorCategoria;
+                }
             },
             abrirModal(modelo, accion, data=[]){
                 switch(modelo){
@@ -236,5 +257,13 @@
         opacity: 1 !important;
         position: absolute !important;
         background-color: #3c29297a !important;
+    }
+    .div-error{
+        display: flex;
+        justify-content: center;
+    }
+    .text-error{
+        color: red !important;
+        font-weight: bold;
     }
 </style>
