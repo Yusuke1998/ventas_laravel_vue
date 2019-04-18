@@ -122,7 +122,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                         <button type="button" v-if="tipoAccion==1"  @click="registrarCategoria()" class="btn btn-primary">Guardar</button>
-                        <button type="button" v-if="tipoAccion==2" class="btn btn-primary">Actualizar</button>
+                        <button type="button" v-if="tipoAccion==2" @click="actualizarCategoria()" class="btn btn-primary">Actualizar</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -160,6 +160,7 @@
     export default {
         data() {
             return  {
+                categoria_id: 0,
                 nombre: '',
                 descripcion: '',
                 arrayCategoria: [],
@@ -198,6 +199,25 @@
                 });
 
             },
+            actualizarCategoria(){
+                 if (this.validarCategoria()) {
+                    return;
+                }
+                let me = this;
+                let url = '/categorias/'+this.categoria_id;
+                axios.post(url,{
+                    '_method':'PUT',
+                    'nombre':this.nombre,
+                    'descripcion':this.descripcion
+                })
+                .then(function(response){
+                    me.cerrarModal();
+                    me.listarCategoria();
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            },
             validarCategoria(){
                 this.errorCategoria = 0;
                 this.errorMsjCategoria = [];
@@ -224,6 +244,7 @@
                             }
                             case 'actualizar':
                             {
+                                this.categoria_id = data.id;
                                 this.tipoAccion = 2;
                                 this.modal = 1;
                                 this.nombre = data.nombre;
@@ -240,6 +261,7 @@
                 this.tituloModal = '';
                 this.nombre = '';
                 this.descripcion = '';
+                this.errorCategoria = 0;
             }
         },
         mounted() {

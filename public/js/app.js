@@ -34606,6 +34606,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            categoria_id: 0,
             nombre: '',
             descripcion: '',
             arrayCategoria: [],
@@ -34632,6 +34633,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             var me = this;
             axios.post('/categorias', {
+                'nombre': this.nombre,
+                'descripcion': this.descripcion
+            }).then(function (response) {
+                me.cerrarModal();
+                me.listarCategoria();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        actualizarCategoria: function actualizarCategoria() {
+            if (this.validarCategoria()) {
+                return;
+            }
+            var me = this;
+            var url = '/categorias/' + this.categoria_id;
+            axios.post(url, {
+                '_method': 'PUT',
                 'nombre': this.nombre,
                 'descripcion': this.descripcion
             }).then(function (response) {
@@ -34669,6 +34687,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 }
                             case 'actualizar':
                                 {
+                                    this.categoria_id = data.id;
                                     this.tipoAccion = 2;
                                     this.modal = 1;
                                     this.nombre = data.nombre;
@@ -34685,6 +34704,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.tituloModal = '';
             this.nombre = '';
             this.descripcion = '';
+            this.errorCategoria = 0;
         }
     },
     mounted: function mounted() {
@@ -34986,7 +35006,12 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-primary",
-                        attrs: { type: "button" }
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.actualizarCategoria()
+                          }
+                        }
                       },
                       [_vm._v("Actualizar")]
                     )
