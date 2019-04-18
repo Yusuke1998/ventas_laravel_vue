@@ -43,9 +43,17 @@
                                     <button type="button" @click="abrirModal('categoria','actualizar',categoria)" class="btn btn-warning btn-sm">
                                       <i class="icon-pencil"></i>
                                     </button> &nbsp;
-                                    <button type="button" class="btn btn-danger btn-sm">
-                                      <i class="icon-trash"></i>
-                                    </button>
+                                    <template v-if="categoria.condicion">
+                                        <button type="button" class="btn btn-danger btn-sm">
+                                            <i class="icon-trash" @click="desactivarCategoria(categoria.id)"></i>
+                                        </button>
+                                    </template>
+                                    <template v-else>
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            <i class="icon-check" @click="activarCategoria(categoria.id)"></i>
+                                        </button>
+                                    </template>
+
                                 </td>
                                 <td v-text="categoria.nombre"></td>
                                 <td v-text="categoria.descripcion"></td>
@@ -130,29 +138,6 @@
             <!-- /.modal-dialog -->
         </div>
         <!--Fin del modal-->
-        <!-- Inicio del modal Eliminar -->
-        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-danger" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Eliminar Categoría</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Estas seguro de eliminar la categoría?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- Fin del modal Eliminar -->
     </main>
 </template>
 
@@ -200,7 +185,7 @@
 
             },
             actualizarCategoria(){
-                 if (this.validarCategoria()) {
+                if (this.validarCategoria()) {
                     return;
                 }
                 let me = this;
@@ -212,6 +197,32 @@
                 })
                 .then(function(response){
                     me.cerrarModal();
+                    me.listarCategoria();
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            },
+            activarCategoria(id){
+                let me = this;
+                let url = '/categoria/activar/'+id;
+                axios.post(url,{
+                    '_method':'PUT'
+                })
+                .then(function(response){
+                    me.listarCategoria();
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            },
+            desactivarCategoria(id){
+                let me = this;
+                let url = '/categoria/desactivar/'+id;
+                axios.post(url,{
+                    '_method':'PUT'
+                })
+                .then(function(response){
                     me.listarCategoria();
                 })
                 .catch(function(error){
