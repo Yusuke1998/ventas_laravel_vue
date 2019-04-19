@@ -9,7 +9,7 @@ class Articulo extends Model
     protected $table = 'articulos';
     public $primaryKey = 'categoria_id';
     protected $fillable = [
-    	'nombre', 'condicion', 'descripcion', 'categoria_id', 'codigo', 'precio', 'stock',
+    	'nombre', 'condicion', 'descripcion', 'categoria_id', 'codigo', 'precio_venta', 'stock',
     ];
 
     public function categoria(){

@@ -9,7 +9,7 @@ class ArticulosController extends Controller
 {
     public function index(Request $request)
     {
-        // if (!$request->ajax()) return redirect('/');
+        if (!$request->ajax()) return redirect('/');
         $buscar     = $request->buscar;
         $criterio   = $request->criterio;
 
@@ -45,8 +45,15 @@ class ArticulosController extends Controller
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-
-        $articulo = Articulo::create($request->all());
+        $articulo = Articulo::create([
+            'nombre'            =>  $request->nombre, 
+            'condicion'         =>  '1', 
+            'descripcion'       =>  $request->descripcion, 
+            'categoria_id'      =>  $request->categoria_id, 
+            'codigo'            =>  $request->codigo, 
+            'precio_venta'      =>  $request->precio_venta, 
+            'stock'             =>  $request->stock
+        ]);
         return Redirect(Route('articulos.index'));
     }
 
@@ -63,8 +70,15 @@ class ArticulosController extends Controller
     public function update(Request $request, $id)
     {
         if (!$request->ajax()) return redirect('/');
-
-        $articulo = Articulo::find($id)->update($request->all());
+        
+        $categoria = Articulo::where('id','=',$id)->update([
+            'nombre'            =>  $request->nombre,
+            'descripcion'       =>  $request->descripcion, 
+            'categoria_id'      =>  $request->categoria_id, 
+            'codigo'            =>  $request->codigo, 
+            'precio_venta'      =>  $request->precio_venta, 
+            'stock'             =>  $request->stock,
+        ]);
         return Redirect(Route('articulos.index'));
     }
 
