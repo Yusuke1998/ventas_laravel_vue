@@ -35732,24 +35732,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(error);
             });
         },
-        activarCategoria: function activarCategoria(id) {
+        activarArticulo: function activarArticulo(id) {
             var me = this;
-            var url = '/categoria/activar/' + id;
+            var url = '/articulo/activar/' + id;
             axios.post(url, {
                 '_method': 'PUT'
             }).then(function (response) {
-                me.listarCategoria(1, '', 'nombre');
+                me.listarArticulo(1, '', 'nombre');
             }).catch(function (error) {
                 console.log(error);
             });
         },
-        desactivarCategoria: function desactivarCategoria(id) {
+        desactivarArticulo: function desactivarArticulo(id) {
             var me = this;
-            var url = '/categoria/desactivar/' + id;
+            var url = '/articulo/desactivar/' + id;
             axios.post(url, {
                 '_method': 'PUT'
             }).then(function (response) {
-                me.listarCategoria(1, '', 'nombre');
+                me.listarArticulo(1, '', 'nombre');
             }).catch(function (error) {
                 console.log(error);
             });
@@ -36011,7 +36011,7 @@ var render = function() {
                                     staticClass: "icon-trash",
                                     on: {
                                       click: function($event) {
-                                        return _vm.desactivarCategoria(
+                                        return _vm.desactivarArticulo(
                                           articulo.id
                                         )
                                       }
@@ -36032,7 +36032,7 @@ var render = function() {
                                     staticClass: "icon-check",
                                     on: {
                                       click: function($event) {
-                                        return _vm.activarCategoria(articulo.id)
+                                        return _vm.activarArticulo(articulo.id)
                                       }
                                     }
                                   })

@@ -47,12 +47,12 @@
                                     </button> &nbsp;
                                     <template v-if="articulo.condicion">
                                         <button type="button" class="btn btn-danger btn-sm">
-                                            <i class="icon-trash" @click="desactivarCategoria(articulo.id)"></i>
+                                            <i class="icon-trash" @click="desactivarArticulo(articulo.id)"></i>
                                         </button>
                                     </template>
                                     <template v-else>
                                         <button type="button" class="btn btn-success btn-sm">
-                                            <i class="icon-check" @click="activarCategoria(articulo.id)"></i>
+                                            <i class="icon-check" @click="activarArticulo(articulo.id)"></i>
                                         </button>
                                     </template>
 
@@ -306,27 +306,27 @@
                     console.log(error);
                 });
             },
-            activarCategoria(id){
+            activarArticulo(id){
                 let me = this;
-                let url = '/categoria/activar/'+id;
+                let url = '/articulo/activar/'+id;
                 axios.post(url,{
                     '_method':'PUT'
                 })
                 .then(function(response){
-                    me.listarCategoria(1,'','nombre');
+                    me.listarArticulo(1,'','nombre');
                 })
                 .catch(function(error){
                     console.log(error);
                 });
             },
-            desactivarCategoria(id){
+            desactivarArticulo(id){
                 let me = this;
-                let url = '/categoria/desactivar/'+id;
+                let url = '/articulo/desactivar/'+id;
                 axios.post(url,{
                     '_method':'PUT'
                 })
                 .then(function(response){
-                    me.listarCategoria(1,'','nombre');
+                    me.listarArticulo(1,'','nombre');
                 })
                 .catch(function(error){
                     console.log(error);
