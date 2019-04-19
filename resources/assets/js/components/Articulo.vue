@@ -8,8 +8,8 @@
             <!-- Ejemplo de tabla Listado -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Categorías
-                    <button type="button" class="btn btn-secondary" @click="abrirModal('categoria','registrar')">
+                    <i class="fa fa-align-justify"></i> Articulos
+                    <button type="button" class="btn btn-secondary" @click="abrirModal('articulo','registrar')">
                         <i class="icon-plus"></i>&nbsp;Nuevo
                     </button>
                 </div>
@@ -21,8 +21,8 @@
                                   <option value="nombre">Nombre</option>
                                   <option value="descripcion">Descripción</option>
                                 </select>
-                                <input type="text" v-model="buscar" @keyup.enter="listarCategoria('1',buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                <button type="submit" @click="listarCategoria('1',buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                <input type="text" v-model="buscar" @keyup.enter="listarArticulo('1',buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                <button type="submit" @click="listarArticulo('1',buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
                     </div>
@@ -30,36 +30,44 @@
                         <thead>
                             <tr>
                                 <th>Opciones</th>
+                                <th>Codigo</th>
                                 <th>Nombre</th>
+                                <th>Categoria</th>
+                                <th>Precio de venta</th>
+                                <th>Stock</th>
                                 <th>Descripción</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="categoria in arrayCategoria" :key="categoria.id">
+                            <tr v-for="articulo in arrayArticulo" :key="articulo.id">
                                 <td>
-                                    <button type="button" @click="abrirModal('categoria','actualizar',categoria)" class="btn btn-warning btn-sm">
+                                    <button type="button" @click="abrirModal('articulo','actualizar',articulo)" class="btn btn-warning btn-sm">
                                       <i class="icon-pencil"></i>
                                     </button> &nbsp;
-                                    <template v-if="categoria.condicion">
+                                    <template v-if="articulo.condicion">
                                         <button type="button" class="btn btn-danger btn-sm">
-                                            <i class="icon-trash" @click="desactivarCategoria(categoria.id)"></i>
+                                            <i class="icon-trash" @click="desactivarCategoria(articulo.id)"></i>
                                         </button>
                                     </template>
                                     <template v-else>
                                         <button type="button" class="btn btn-success btn-sm">
-                                            <i class="icon-check" @click="activarCategoria(categoria.id)"></i>
+                                            <i class="icon-check" @click="activarCategoria(articulo.id)"></i>
                                         </button>
                                     </template>
 
                                 </td>
-                                <td v-text="categoria.nombre"></td>
-                                <td v-text="categoria.descripcion"></td>
+                                <td v-text="articulo.codigo"></td>
+                                <td v-text="articulo.nombre"></td>
+                                <td v-text="articulo.nombre_categoria"></td>
+                                <td v-text="articulo.precio_venta"></td>
+                                <td v-text="articulo.stock"></td>
+                                <td v-text="articulo.descripcion"></td>
                                 <td>
-                                    <div v-if="categoria.condicion">
+                                    <div v-if="articulo.condicion">
                                         <span class="badge badge-success">Activo</span>
                                     </div>
-                                    <div v-else="categoria.condicion">
+                                    <div v-else="articulo.condicion">
                                         <span class="badge badge-danger">Inactivo</span>
                                     </div>
                                 </td>
@@ -134,15 +142,20 @@
     export default {
         data() {
             return  {
-                categoria_id: 0,
+                articulo_id: 0,
+                // categoria_id: 0,
+                idCategoria: 0,
+                nombre_categoria: '',
+                precio_venta: 0,
+                stock: 0,
                 nombre: '',
                 descripcion: '',
-                arrayCategoria: [],
+                arrayArticulo: [],
                 modal: 0,
                 tituloModal: '',
                 tipoAccion: 0,
-                errorCategoria: 0,
-                errorMsjCategoria: [],
+                errorArticulo: 0,
+                errorMsjArticulo: [],
                 pagination: {
                     'total' : 0,
                     'current_page' : 0,
@@ -187,12 +200,12 @@
             }
         },
         methods: {
-            listarCategoria(page, buscar, criterio){
+            listarArticulo(page, buscar, criterio){
                 let me = this;
-                var url = '/categorias?page='+ page + '&buscar='+ buscar + '&criterio=' + criterio;
+                var url = '/articulos?page='+ page + '&buscar='+ buscar + '&criterio=' + criterio;
                 axios.get(url).then(function(response){
                     var respuesta = response.data;
-                    me.arrayCategoria = respuesta.categorias.data;
+                    me.arrayArticulo = respuesta.articulos.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function(error){
@@ -204,7 +217,7 @@
                 // Actualiza la pagina
                 me.pagination.current_page = page;
                 // Envia la peticion para visualizar la data de esa pagina
-                me.listarCategoria(page, buscar, criterio);
+                me.listarArticulo(page, buscar, criterio);
             },
             registrarCategoria(){
                 if (this.validarCategoria()) {
@@ -316,7 +329,7 @@
             }
         },
         mounted() {
-            this.listarCategoria(1,this.buscar,this.criterio);
+            this.listarArticulo(1,this.buscar,this.criterio);
 
         }
     }

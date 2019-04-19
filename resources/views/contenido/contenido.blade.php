@@ -9,9 +9,7 @@
             <categoria></categoria>
         </template>
         <template v-if="menu==2">
-            <div class="p-5 m-5">
-                <h1>Contenido del menu: @{{ menu }}</h1>
-            </div>
+            <articulo></articulo>
         </template>
         <template v-if="menu==3">
             <div class="p-5 m-5">
